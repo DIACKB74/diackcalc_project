@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Javscript</title>
+	<style type="text/css">
+		button{
+			width: 100%;
+			font-weight: bold;
+			font-size: 1.5em;
+		}
+
+		table{
+			min-width: 250px;
+			max-width: 250px;
+			border-collapse: collapse;
+		}
+
+		span{
+			display: block;
+			padding: 3px;
+			width: 100%;
+			height: 100%;
+			background-color: #f3f3F3 ;
+			border-radius: 3px;
+			color: black;
+			box-sizing:border-box;
+			font-size: 1.5em;
+			text-align: right;
+		}
+
+		button{
+			min-width: 25px;
+		}
+	</style>
+</head>
+<body>
+
+<table>
+	<tr>
+		<td colspan="3">
+			<span>0</span>
+		</td>
+		<td>
+			<button>C</button>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<button>0</button>
+		</td>
+		<td>
+			<button>1</button>
+		</td>
+		<td>
+			<button>2</button>
+		</td>
+		<td>
+			<button>/</button>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<button>3</button>
+		</td>
+		<td>
+			<button>4</button>
+		</td>
+		<td>
+			<button>5</button>
+		</td>
+		<td>
+			<button>*</button>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<button>6</button>
+		</td>
+		<td>
+			<button>7</button>
+		</td>
+		<td>
+			<button>8</button>
+		</td>
+		<td>
+			<button>-</button>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<button>9</button>
+		</td>
+		<td colspan="2">
+			<button>=</button>
+		</td>
+		<td>
+			<button>+</button>
+		</td>
+	</tr>
+</table>
+
+
+<script type="text/javascript">
+var operator; //currnet operator
+var leftOperand=0;
+var rightOperand=0;
+var memory='0';
+var result=memory;
+var isOperatorJustClicked=false;
+
+var screen=document.getElementsByTagName("span")[0];
+var buttons=document.getElementsByTagName("button");
+for(var i=0;i<buttons.length; i++){
+	var btn=buttons[i];
+	btn.onclick=function(){
+		var btnText=this.innerText;
+		switch(btnText){
+			/*zone numérique */
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				if(memory==='0')
+					memory='';
+				if(isOperatorJustClicked)
+					memory='';
+				
+				memory+=btnText;
+				isOperatorJustClicked=false;
+			break;
+
+			/* zone opérateurs */
+			case '/':
+			case '*':
+			case '-':
+			case '+':					
+				operator=btnText;
+				leftOperand=memory;
+				isOperatorJustClicked=true;
+			break;
+			/* zone action */
+			case 'C':
+				operator='';
+				memory='0';
+				leftOperand=0;
+				rightOperand=0;
+				isOperatorJustClicked=false;
+			break;
+			case '=':
+				rightOperand=memory;
+				result=process(operator,leftOperand,rightOperand);
+				memory=result;
+			break;
+		}
+		screen.innerText=memory;
+	}
+}
+
+function process(operator,leftOperand,rightOperand){
+	leftOperand=parseInt(leftOperand);
+	rightOperand=parseInt(rightOperand);
+	var result;
+	switch(operator){
+		case '/':
+			result=(leftOperand/rightOperand);
+		break;
+		case '*':
+			result=(leftOperand*rightOperand);
+		break;
+		case '-':
+			result=(leftOperand-rightOperand);
+		break;
+		case '+':
+			result=(leftOperand+rightOperand);
+		break;
+		default:
+		result=rightOperand;
+	}
+	return result;
+}
+
+</script>
+</body>
+</html>
